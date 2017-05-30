@@ -100,9 +100,15 @@ class admin extends CI_Controller{
 	public function bukaHalamanTeknisiSMS(){
 		$rowsTekn = $this->model->dataTeknisiSMS();
 		$rowsCust = $this->model->dataCustomerSMS();
-		$this->load->view('admin_view_head', ['smsmenu'=>'true', 'notifTek'=>$rowsTekn->num_rows(), 'notifCust'=>$rowsCust->num_rows()]);
-		$this->load->view('daftar_teknisi', ['rows'=>$rowsTekn->result()]);
+		$this->load->view('admin_view_head', ['smsmenu_teknisi'=>'true', 'notifTek'=>$rowsTekn->num_rows(), 'notifCust'=>$rowsCust->num_rows()]);
+		$this->load->view('sms_teknisi', ['rows'=>$rowsTekn->result()]);
 		$this->load->view('admin_view_footer');
+	}
+	
+	public function updateSMSTeknisi(){
+		$this->model->id_teknisi = $_POST['id_teknisi'];
+		$this->model->updateSMSTeknisi();
+		redirect('admin/bukaHalamanTeknisiSMS');
 	}
 	
 	public function bukaHalamanCustomer(){
@@ -117,11 +123,17 @@ class admin extends CI_Controller{
 	public function bukaHalamanCustomerSMS(){
 		$rowsTekn = $this->model->dataTeknisiSMS();
 		$rowsCust = $this->model->dataCustomerSMS();
-		$this->load->view('admin_view_head', ['smsmenu'=>'true', 'notifTek'=>$rowsTekn->num_rows(), 'notifCust'=>$rowsCust->num_rows()]);
-		$this->load->view('daftar_customer', ['rows'=>$rowsCust->result()]);
+		$this->load->view('admin_view_head', ['smsmenu_cust'=>'true', 'notifTek'=>$rowsTekn->num_rows(), 'notifCust'=>$rowsCust->num_rows()]);
+		$this->load->view('sms_customer', ['rows'=>$rowsCust->result()]);
 		$this->load->view('admin_view_footer');
 	}
 
+	public function updateSMSCustomer(){
+		$this->model->id_cust = $_POST['id_cust'];
+		$this->model->updateSMSCustomer();
+		redirect('admin/bukaHalamanCustomerSMS');
+	}
+	
 	public function getNotificationTekn(){
 		$rowsTekn = $this->model->dataTeknisiSMS();
 
@@ -132,6 +144,13 @@ class admin extends CI_Controller{
 		$rowsCust = $this->model->dataCustomerSMS();
 
 		echo $rowsCust->num_rows();
+	}
+	
+	public function getNotificationAll(){
+		$rowsTekn = $this->model->dataTeknisiSMS();
+		$rowsCust = $this->model->dataCustomerSMS();
+		$total_notif = $rowsTekn->num_rows() + $rowsCust->num_rows();
+		echo $total_notif;
 	}
 }
 ?>

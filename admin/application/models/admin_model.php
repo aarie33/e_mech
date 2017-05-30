@@ -46,9 +46,13 @@ class admin_model extends CI_Model{
 	}
 
 	public function dataTeknisiSMS(){
-		$sql = "SELECT*FROM teknisi WHERE status=1 AND NOT kode_ver = ''";
+		$sql = "SELECT*FROM teknisi WHERE status=1 AND NOT kode_ver = '' AND (sms_status = 0 OR sms_status = '')";
 		$query = $this->db->query($sql);
 		return $query;
+	}
+	
+	public function updateSMSTeknisi(){
+		$query = $this->db->query("UPDATE teknisi SET sms_status = 1 WHERE id_teknisi = '$this->id_teknisi'");
 	}
 	
 	public function dataCustomer(){
@@ -58,9 +62,14 @@ class admin_model extends CI_Model{
 	}
 
 	public function dataCustomerSMS(){
-		$sql = "SELECT*FROM customer WHERE NOT kode_ver = '' ORDER BY id_customer DESC";
+		$sql = "SELECT*FROM customer WHERE NOT kode_ver = '' AND (sms_status = 0 OR sms_status = '') ORDER BY id_customer DESC";
 		$query = $this->db->query($sql);
 		return $query;
 	}
+	
+	public function updateSMSCustomer(){
+		$query = $this->db->query("UPDATE customer SET sms_status = 1 WHERE id_customer = '$this->id_cust'");
+	}
+	
 }
 ?>

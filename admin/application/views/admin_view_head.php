@@ -3,7 +3,15 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Administrator E-Mech</title>
+	<title>
+		<?php 
+			$notifAll = $notifTek + $notifCust; 
+			if($notifAll>0){
+				echo "(".$notifAll.")";
+			}
+		?>
+		Administrator E-Mech
+	</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
@@ -47,6 +55,8 @@
     <script>
     var jlh_notifTekn = null;
     var jlh_notifCust = null;
+	var jlh_notifAll = null;
+	var timeout_length = 10000;
       document.addEventListener('DOMContentLoaded', function () {
       if (!Notification) {
         alert('Desktop notifications not available in your browser. Try Chromium.'); 
@@ -100,18 +110,41 @@
           function (data){
             if(jlh_notifTekn == null){
               jlh_notifTekn = data;
-              //showNotifTekn(data);
+              getNotifAll();
             }else{
               if(data>jlh_notifTekn){
-                showNotifTekn(data);
-                jlh_notifTekn = data;
+				  getNotifAll();
+				  showNotifTekn(data);
+				  jlh_notifTekn = data;
+				  document.getElementById('notifTekn').innerHTML = '<span class="label label-primary">'+data+'</span>';
+				  <?php 
+				  if(isset($smsmenu_teknisi)){ ?>
+						location.reload();
+				  <?php
+				  }
+				  ?>
+              }else if(data<jlh_notifTekn){
+				  getNotifAll();
+				  if(data == 0){
+					  //$('#notif').hide();
+					  $('#notifTekn').hide();
+				  }else{
+					  document.getElementById('notifTekn').innerHTML = '<span class="label label-primary">'+data+'</span>';
+				  }
+				  <?php 
+				  if(isset($smsmenu_teknisi)){ ?>
+						location.reload();
+				  <?php
+				  }
+				  ?>
+				  jlh_notifTekn = data;
               }else{
-                jlh_notifTekn = data;
-              }
+				  jlh_notifTekn = data;
+			  }
             }
             setTimeout(function(){
               getNotifTekn();
-            }, 10000);
+            }, timeout_length);
           }
       });
     }
@@ -123,25 +156,77 @@
           function (data){
             if(jlh_notifCust == null){
               jlh_notifCust = data;
-              //showNotifCust(data);
+              getNotifAll();
             }else{
               if(data>jlh_notifCust){
-                showNotifCust(data);
-                jlh_notifCust = data;
+				  getNotifAll();
+				  showNotifCust(data);
+				  jlh_notifCust = data;
+				  document.getElementById('notifCust').innerHTML = '<span class="label label-primary">'+data+'</span>';
+				  <?php 
+				  if(isset($smsmenu_cust)){ ?>
+						location.reload();
+				  <?php
+				  }
+				  ?>
+              }else if(data<jlh_notifCust){
+				  getNotifAll();
+				  if(data == 0){
+					  //$('#notif').hide();
+					  $('#notifCust').hide();
+				  }else{
+					  document.getElementById('notifCust').innerHTML = '<span class="label label-primary">'+data+'</span>';
+				  }
+				  <?php 
+				  if(isset($smsmenu_cust)){ ?>
+						location.reload();
+				  <?php
+				  }
+				  ?>
+				  jlh_notifCust = data;
               }else{
                 jlh_notifCust = data;
               }
             }
             setTimeout(function(){
               getNotifCust();
-            }, 10000);
+            }, timeout_length);
+          }
+      });
+    }
+		
+	function getNotifAll(){
+      $.ajax({
+        url:'<?php echo site_url('admin/getNotificationAll');?>',
+        success:
+          function (data){
+            if(jlh_notifAll == null){
+              jlh_notifAll = data;
+            }else{
+              if(data>jlh_notifAll){
+				  jlh_notifAll = data;
+				  document.getElementById('notif').innerHTML = '<span class="label label-primary">'+data+'</span>';
+				  document.title = '(' + data + ') Administrator E-Mech';
+              }else if(data<jlh_notifAll){
+				  if(data == 0){
+					  $('#notif').hide();
+				  }else{
+					  document.getElementById('notif').innerHTML = '<span class="label label-primary">'+data+'</span>';
+					  document.title = '(' + data + ') Administrator E-Mech';
+				  }
+				  jlh_notifAll = data;
+              }else{
+				  jlh_notifAll = data;
+			  }
+            }
           }
       });
     }
 
     $(function(){
-      getNotifTekn();
-      getNotifCust();
+		getNotifTekn();
+		getNotifCust();
+		getNotifAll();
     });
   </script>
 
@@ -160,25 +245,33 @@
     </div>
     <div class="navbar-collapse collapse">
 	    <ul class="nav navbar-nav">
-	      <li><a href="#">Home</a></li>
           <li <?php if(isset($konfTeknisi)){ echo 'class="active"';}?>><a href="<?php echo site_url('admin/bukaHalamanKonfTeknisi');?>">Teknisi Baru</a></li>
           <li <?php if(isset($teknisi)){ echo 'class="active"';}?>><a href="<?php echo site_url('admin/bukaHalamanTeknisi');?>">Teknisi</a></li>
           <li <?php if(isset($customer)){ echo 'class="active"';}?>><a href="<?php echo site_url('admin/bukaHalamanCustomer');?>">Customer</a></li>
-          <li class="dropdown <?php if(isset($smsmenu)){ echo 'active';}?>">
+          <li class="dropdown <?php if(isset($smsmenu_teknisi) or isset($smsmenu_cust)){ echo 'active';}?>">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-              Kode SMS <?php $notifAll = $notifTek + $notifCust; 
-                  if($notifTek>0){
-                    echo '<span class="label label-primary">'.$notifAll.'</span>';
-                    } ?>
+              Kode SMS 
+				<span id="notif">
+					 <?php 
+					  if($notifAll>0){
+						echo '<span class="label label-primary">'.$notifAll.'</span>';
+						} ?>
+             	</span>
               <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
                <li>
                 <a href="<?php echo site_url('admin/bukaHalamanTeknisiSMS');?>">
-                  SMS Teknisi <?php if($notifTek>0){echo '<span class="label label-primary">'.$notifTek.'</span>';} ?>
+                  SMS Teknisi
+					<span id="notifTekn">
+                  		<?php if($notifTek>0){echo '<span class="label label-primary">'.$notifTek.'</span>';} ?>
+					</span>
                 </a>
                 <a href="<?php echo site_url('admin/bukaHalamanCustomerSMS');?>">
-                  SMS Customer <?php if($notifCust>0){echo '<span class="label label-primary">'.$notifCust.'</span>';} ?>
+                  SMS Customer 
+					<span id="notifCust">
+               			<?php if($notifCust>0){echo '<span class="label label-primary">'.$notifCust.'</span>';} ?>
+					</span>
                 </a>
             </li>
                 </ul>
