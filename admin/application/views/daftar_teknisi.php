@@ -37,20 +37,3 @@
     <?php } ?>
     </tbody>
 </table>
-
-<script>
-$(function(){
-	$('.btnKonfirmasi').click(function(){
-		$('#id_teknisi').val($(this).attr('id_teknisi'));
-		$.ajax({
-			type: "POST",
-			url: "<?php echo site_url('admin/ajaxFormKonfTeknisi/'); ?>",
-			//dataType: 'json',
-			data: {id_teknisi: $(this).attr('id_teknisi')},
-			success: function(data) {
-				$('#resultFormKonf').html(data);
-			}
-		});
-	});
-});
-</script>
