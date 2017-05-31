@@ -11,7 +11,6 @@
             <th>Kode Ver</th>
             <th>Rating</th>
             <th>Status</th>
-            <th>Tindakan</th>
         </tr>
     </thead>
     <tbody>
@@ -34,8 +33,6 @@
             <td><?php if($row->kode_ver<>"")echo '<b class="text-primary">'.$row->kode_ver.'</b>';?></td>
             <td><?php echo $row->rating;?></td>
             <td><?php echo $row->status;?></td>
-            <td align="center"><a href="#" data-toggle="modal" data-target="#modal_konfirmasi" class="btn btn-xs btn-primary btnKonfirmasi" id_teknisi="<?php echo $row->id_teknisi;?>"><span class="glyphicon glyphicon-ok"></span></a>
-            <a href="crud_p11/delete/<?php echo $row->id_teknisi;?>" data-toggle="modal" data-target="#modal_hapus" class="btn btn-xs btn-danger btnHapus"><span class="glyphicon glyphicon-remove"></span> </a></td>
         </tr>
     <?php } ?>
     </tbody>
