@@ -38,49 +38,6 @@
     </tbody>
 </table>
 
-<div class="modal fade" id="modal_konfirmasi" tabindex="-1" role="dialog" aria-labelledby="LabelModalEdit">
-	<div class="modal-dialog" role="document">
-    	<div class="modal-content">
-        	<form method="post" action="<?php echo site_url('admin/simpanKonfTeknisi');?>">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="LabelModalTambah">Konfirmasi Teknisi</h4>
-            </div>
-            <div class="modal-body">
-            	<div class="container">
-                    <h5>Pilih keahlian untuk dikonfirmasi</h5>
-                    <input type="hidden" name="id_teknisi" id="id_teknisi" />
-                    <div id="resultFormKonf"></div>
-				</div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Batal</button>
-                <button type="submit" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-ok"></span> Konfirmasi</button>
-            </div>
-            </form>
-		</div>
-	</div>
-</div>
-<div class="modal fade" id="modal_hapus" tabindex="-1" role="dialog" aria-labelledby="LabelModalEdit">
-	<div class="modal-dialog" role="document">
-    	<div class="modal-content">
-        	<form method="post" action="laundryMasukHapus_proses.php">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="LabelModalTambah">Apakah Anda yakin akan menghapus data ini ?</h4>
-            </div>
-            <div class="modal-body">
-            	<center><b id="no_laundryHapuslbl" style="font-size:36px; color:red;"></b></center>
-                <input type="hidden" name="no_laundryHapus" id="no_laundryHapus" />
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Batal</button>
-                <button type="submit" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove"></span> Hapus</button>
-            </div>
-            </form>
-		</div>
-	</div>
-</div>
 <script>
 $(function(){
 	$('.btnKonfirmasi').click(function(){
